@@ -1,33 +1,43 @@
-import React from "react";
-import logo from "./logo.svg";
+import { Button, Text } from "@deriv/ui";
+import React, { useCallback, useState } from "react";
 import "./App.css";
-import { Button } from "@deriv/ui";
+import { add } from "./Utils";
 
-function App() {
+function App({ title }: { title: string }) {
+  const [first, setFirst] = useState(0);
+  const [second, setSecond] = useState(0);
+  const [result, setResult] = useState(0);
+
+  const onCalculate = useCallback(() => {
+    setResult(add(first, second));
+  }, [first, second]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <Button
-          onClick={() => {
-            alert("button clicked!");
-          }}
-        >
-          Click Me!
-        </Button>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Text>{title}</Text>
+      <div>
+        <label htmlFor="first">First Number</label>
+        <input
+          placeholder="First Number"
+          defaultValue={0}
+          id="first"
+          type="text"
+          onChange={(event) => setFirst(Number(event.target.value))}
+        />
+      </div>
+      <div>
+        <label htmlFor="second">Second Number</label>
+        <input
+          placeholder="Second Number"
+          defaultValue={0}
+          id="second"
+          type="text"
+          onChange={(event) => setSecond(Number(event.target.value))}
+        />
+      </div>
+      <Button onClick={onCalculate}>Calculate</Button>
+      <Text data-testid="result">{result}</Text>
+    </>
   );
 }
 
